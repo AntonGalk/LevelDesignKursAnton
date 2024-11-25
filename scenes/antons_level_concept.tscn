@@ -1,0 +1,209 @@
+[gd_scene load_steps=18 format=3 uid="uid://blurk5rbv2f2m"]
+
+[ext_resource type="Environment" uid="uid://bqnqgflivjvue" path="res://scenes/main-environment.tres" id="1_4j81m"]
+[ext_resource type="PackedScene" uid="uid://b3pkn0hgfsqvr" path="res://scenes/player.tscn" id="1_oyjoc"]
+[ext_resource type="PackedScene" uid="uid://di3tboe5iv60t" path="res://models/models_with_colliders/block_snow_large_collider.tscn" id="2_ny3ia"]
+[ext_resource type="Script" path="res://scripts/view.gd" id="3_g174j"]
+[ext_resource type="PackedScene" uid="uid://cxea8lmw7cy1l" path="res://objects/player_kill_volume.tscn" id="11_f7415"]
+[ext_resource type="PackedScene" uid="uid://c8up71en5djgm" path="res://objects/platform_falling.tscn" id="15_08pkv"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="19_kjfhk"]
+[ext_resource type="Texture2D" uid="uid://cd7oyc56ehkx1" path="res://sprites/coin.png" id="20_o2jrf"]
+[ext_resource type="LabelSettings" uid="uid://daohhjonjrdx8" path="res://themes/label_settings.tres" id="21_afdc2"]
+[ext_resource type="FontFile" uid="uid://d0cxd77jybrcn" path="res://fonts/lilita_one_regular.ttf" id="22_3ixsk"]
+[ext_resource type="Theme" uid="uid://d3avl0mr4r87l" path="res://themes/default_theme.tres" id="23_i4lun"]
+[ext_resource type="Texture2D" uid="uid://dm50aa4qogm65" path="res://sprites/button_rectangle_depth_gloss.png" id="24_q04b8"]
+[ext_resource type="PackedScene" uid="uid://dbr3dh46cbskt" path="res://objects/wall.tscn" id="25_r6j03"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_u8ojw"]
+auto_exposure_scale = 0.75
+dof_blur_far_distance = 0.01
+
+[sub_resource type="LabelSettings" id="LabelSettings_ri8jt"]
+font = ExtResource("22_3ixsk")
+font_size = 128
+shadow_color = Color(0, 0, 0, 0.376471)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_x4d2s"]
+font = ExtResource("22_3ixsk")
+font_size = 32
+shadow_color = Color(0, 0, 0, 0.376471)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_v6r7m"]
+font = ExtResource("22_3ixsk")
+font_size = 42
+shadow_color = Color(0, 0, 0, 0.376471)
+shadow_offset = Vector2(2, 2)
+
+[node name="Main" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.91316, -2.73313, -2.77041)
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+unique_name_in_owner = true
+environment = ExtResource("1_4j81m")
+camera_attributes = SubResource("CameraAttributesPractical_u8ojw")
+
+[node name="Player" parent="." node_paths=PackedStringArray("view") instance=ExtResource("1_oyjoc")]
+transform = Transform3D(-0.436802, 0, -0.899558, 0, 1, 0, 0.899558, 0, -0.436802, 0, 1.86931, 6.61307)
+view = NodePath("../View")
+
+[node name="View" type="Node3D" parent="." node_paths=PackedStringArray("target") groups=["View"]]
+process_mode = 3
+transform = Transform3D(0.707107, -0.298836, 0.640856, 0, 0.906308, 0.422618, -0.707107, -0.298836, 0.640856, 0, 0, 0)
+script = ExtResource("3_g174j")
+target = NodePath("../Player")
+
+[node name="Camera" type="Camera3D" parent="View"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+current = true
+fov = 40.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.422618, -0.694272, 0.582563, 0, 0.642788, 0.766044, -0.906308, 0.323744, -0.271654, 0, 0, 0)
+shadow_enabled = true
+shadow_opacity = 0.75
+
+[node name="HUD" type="CanvasLayer" parent="." groups=["HUD"]]
+process_mode = 3
+script = ExtResource("19_kjfhk")
+
+[node name="Control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Icon" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 57.0
+offset_top = 67.0
+offset_right = 313.0
+offset_bottom = 323.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("20_o2jrf")
+
+[node name="x" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 64.0
+offset_right = 144.0
+offset_bottom = 123.0
+text = "×"
+label_settings = ExtResource("21_afdc2")
+
+[node name="Level Complete" type="Label" parent="HUD/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -429.0
+offset_top = 139.0
+offset_right = 429.0
+offset_bottom = 287.0
+grow_horizontal = 2
+text = "Level Complete!"
+label_settings = SubResource("LabelSettings_ri8jt")
+
+[node name="CoinsLabel" type="Label" parent="HUD/Control"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 144.0
+offset_top = 64.0
+offset_right = 368.0
+offset_bottom = 123.0
+text = "0"
+label_settings = ExtResource("21_afdc2")
+
+[node name="PlayAgainButton" type="Button" parent="HUD/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -196.0
+offset_top = -258.0
+offset_right = 196.0
+offset_bottom = -122.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 0
+theme = ExtResource("23_i4lun")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("22_3ixsk")
+theme_override_font_sizes/font_size = 60
+text = "Play Again?"
+icon = ExtResource("24_q04b8")
+flat = true
+icon_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="HUD/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -48.5
+offset_top = 59.0
+offset_right = 48.5
+offset_bottom = 115.0
+grow_horizontal = 2
+text = "00"
+label_settings = SubResource("LabelSettings_x4d2s")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeNameLabel" type="Label" parent="HUD/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -49.0
+offset_top = 22.0
+offset_right = 49.0
+offset_bottom = 78.0
+grow_horizontal = 2
+text = "TIME"
+label_settings = SubResource("LabelSettings_v6r7m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="player_kill_volume" parent="." instance=ExtResource("11_f7415")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.91316, -7.26687, 2.77041)
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="block-snow-large2" parent="World" instance=ExtResource("2_ny3ia")]
+transform = Transform3D(6.2882, 0, 0, 0, 1, 0, 0, 0, 5.11275, 0.44135, 0.23951, 6.8968)
+
+[node name="wall2" parent="World" instance=ExtResource("25_r6j03")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4, 1, 10.655)
+
+[node name="wall" parent="World" instance=ExtResource("25_r6j03")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 5.74558, 4, 1.199, 4.99)
+
+[node name="block-snow-large3" parent="World" instance=ExtResource("2_ny3ia")]
+transform = Transform3D(1.84255, 0, 0, 0, 1, 0, 0, 0, 2.89476, -3.63592, 1.22578, 5.473)
+
+[node name="block-snow-large4" parent="World" instance=ExtResource("2_ny3ia")]
+transform = Transform3D(1.46768, 0, 0, 0, 1, 0, 0, 0, 1.29263, -3.63745, 2.0463, 6.92676)
+
+[node name="block-snow-large4" parent="World/block-snow-large4" instance=ExtResource("2_ny3ia")]
+transform = Transform3D(1.46768, 0, 0, 0, 1, 0, 0, 0, 1.29263, -0.247221, 1.64874, 3.73152)
+
+[node name="block-snow-large5" parent="World" instance=ExtResource("2_ny3ia")]
+transform = Transform3D(1.46768, 0, 0, 0, 1, 0, 0, 0, 1.29263, -12.4466, 2.0463, 6.92676)
+
+[node name="platform-falling" parent="World" instance=ExtResource("15_08pkv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.7266, 2.73313, 11.2552)
+
+[connection signal="coin_collected" from="Player" to="HUD" method="_on_coin_collected"]
+[connection signal="reached_goal" from="Player" to="HUD" method="_on_player_reached_goal"]
+[connection signal="pressed" from="HUD/Control/PlayAgainButton" to="HUD" method="_on_play_again_button_pressed"]
