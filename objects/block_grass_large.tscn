@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsw1ihxkteoc1"]
+
+[ext_resource type="PackedScene" uid="uid://ct3jqgtvmr86q" path="res://models/props/block-grass-large.glb" id="1_7thke"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_n6uxw"]
+
+[node name="block-grass-large2" instance=ExtResource("1_7thke")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="block-grass-large" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="block-grass-large/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_n6uxw")
