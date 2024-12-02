@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnl082uucnk6h"]
+
+[ext_resource type="PackedScene" uid="uid://b87snreold7v2" path="res://models/props/ladder-long.glb" id="1_ijqa7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_irywk"]
+
+[node name="ladder-long2" instance=ExtResource("1_ijqa7")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ladder-long" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ladder-long/StaticBody3D" index="0"]
+transform = Transform3D(0.48884, 0, 0, 0, 1.97105, 0, 0, 0, 0.106919, 0, 0.997227, 0)
+shape = SubResource("BoxShape3D_irywk")
